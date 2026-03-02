@@ -10,7 +10,7 @@ curl -fsSL https://aaddrick.github.io/claude-desktop-debian/rpm/claude-desktop.r
     -o /etc/yum.repos.d/claude-desktop.repo
 
 # Ghostty terminal - COPR
-dnf5 -y copr enable a-zhn/ghostty
+dnf5 -y copr enable scottames/ghostty
 
 # lact (GPU control) - COPR
 dnf5 -y copr enable ilyaz/LACT
@@ -36,7 +36,7 @@ dnf5 install -y \
     lact
 
 # Disable COPRs so they don't end up enabled on the final image
-dnf5 -y copr disable a-zhn/ghostty
+dnf5 -y copr disable scottames/ghostty
 dnf5 -y copr disable ilyaz/LACT
 
 # Clean up claude-desktop repo (installed at build time only)
