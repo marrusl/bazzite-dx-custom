@@ -1,2 +1,4 @@
-Replace this file with your cosign public key.
-See README.md for instructions.
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHHrIVUeENSYuNoNtETvbM0iLXNYt
+wa8HUh9D6yu8hwWPZva+0Gl3Wpp4QGs9zMJADVJMVNlBiBNwXvlT9+hqwQ==
+-----END PUBLIC KEY-----
