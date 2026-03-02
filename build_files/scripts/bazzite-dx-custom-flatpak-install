@@ -1,0 +1,28 @@
+#!/bin/bash
+# Install custom flatpaks on first boot (or after image update)
+
+INSTALL_LIST="/usr/share/bazzite-dx-custom/flatpak/install"
+VERSION_FILE="/etc/bazzite-dx-custom/flatpak_version"
+CURRENT_VERSION=$(sha256sum "$INSTALL_LIST" 2>/dev/null | cut -d' ' -f1)
+STORED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
+
+# Only run if the list has changed
+if [ "$CURRENT_VERSION" = "$STORED_VERSION" ]; then
+    echo "Flatpak list unchanged, skipping."
+    exit 0
+fi
+
+# Ensure Flathub is available
+flatpak remote-add --if-not-exists --system flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# Install each app from the list
+while IFS= read -r app_id || [ -n "$app_id" ]; do
+    # Skip empty lines and comments
+    [[ -z "$app_id" || "$app_id" =~ ^# ]] && continue
+    echo "Installing: $app_id"
+    flatpak install -y --noninteractive --system flathub "$app_id" || true
+done < "$INSTALL_LIST"
+
+# Record version
+mkdir -p /etc/bazzite-dx-custom
+echo "$CURRENT_VERSION" > "$VERSION_FILE"

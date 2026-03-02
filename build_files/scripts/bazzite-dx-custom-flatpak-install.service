@@ -1,0 +1,15 @@
+[Unit]
+Description=Install bazzite-dx-custom Flatpak apps
+After=network-online.target bazzite-flatpak-manager.service
+Wants=network-online.target
+ConditionPathExists=/usr/share/bazzite-dx-custom/flatpak/install
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/bazzite-dx-custom-flatpak-install
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
