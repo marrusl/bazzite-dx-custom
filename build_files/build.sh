@@ -15,6 +15,18 @@ dnf5 -y copr enable scottames/ghostty
 # lact (GPU control) - COPR
 dnf5 -y copr enable ilyaz/LACT
 
+# Google Cloud CLI
+curl -fsSL https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg \
+    -o /etc/pki/rpm-gpg/google-cloud-sdk.gpg
+cat > /etc/yum.repos.d/google-cloud-sdk.repo << 'EOF'
+[google-cloud-cli]
+name=Google Cloud CLI
+baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el9-x86_64
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/google-cloud-sdk.gpg
+EOF
+
 ### Install packages
 
 # Packages from Fedora repos
@@ -33,14 +45,17 @@ dnf5 install -y \
 dnf5 install -y \
     claude-desktop \
     ghostty \
+    google-cloud-cli \
     lact
 
 # Disable COPRs so they don't end up enabled on the final image
 dnf5 -y copr disable scottames/ghostty
 dnf5 -y copr disable ilyaz/LACT
 
-# Clean up claude-desktop repo (installed at build time only)
+# Clean up build-time-only repos
 rm -f /etc/yum.repos.d/claude-desktop.repo
+rm -f /etc/yum.repos.d/google-cloud-sdk.repo
+rm -f /etc/pki/rpm-gpg/google-cloud-sdk.gpg
 
 ### Flatpak first-boot installer
 # Flatpaks can't be installed during container build (no D-Bus, no network).
