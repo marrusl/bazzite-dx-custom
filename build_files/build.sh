@@ -38,8 +38,7 @@ dnf5 install -y \
     neovim \
     nicotine+ \
     python3-pyclip \
-    variety \
-    wine-devel
+    variety
 
 # Packages from third-party repos
 dnf5 install -y \
@@ -72,12 +71,6 @@ install -Dm755 /ctx/scripts/bazzite-dx-custom-flatpak-install \
 # Install the systemd service
 install -Dm644 /ctx/scripts/bazzite-dx-custom-flatpak-install.service \
     /usr/lib/systemd/system/bazzite-dx-custom-flatpak-install.service
-
-### Stream Deck udev rules
-# Required for OpenDeck/StreamController to detect Elgato devices
-cat > /etc/udev/rules.d/60-streamdeck.rules << 'EOF'
-SUBSYSTEM=="usb", ATTRS{idVendor}=="0fd9", TAG+="uaccess"
-EOF
 
 ### Enable services
 
